@@ -1,0 +1,437 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block header %}
+ <!-- dropzone css -->
+ <link rel="stylesheet" href="{% static 'assets/libs/dropzone/dropzone.css' %}" type="text/css" />
+
+ <!-- Filepond css -->
+ <link rel="stylesheet" href="{% static 'assets/libs/filepond/filepond.min.css' %}" type="text/css" />
+ <link rel="stylesheet" href="{% static 'assets/libs/filepond-plugin-image-preview/filepond-plugin-image-preview.min.css' %}">
+ 
+
+{% endblock %}
+
+{% block content %}
+
+        <!-- ============================================================== -->
+        <!-- Start right Content here -->
+        <!-- ============================================================== -->
+        <div class="main-content">
+
+            <div class="page-content">
+                <div class="container-fluid">
+
+                    <!-- start page title -->
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+                                <h4 class="mb-sm-0">Fee Particulars</h4>
+
+                                <div class="page-title-right">
+                                    <ol class="breadcrumb m-0">
+                                        <li class="breadcrumb-item"><a href="javascript: void(0);">General Settings</a></li>
+                                        <li class="breadcrumb-item active">Fee Particulars</li>
+                                    </ol>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <!-- end page title -->
+
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="row">
+                               
+
+                                <div class="col-xl-12">
+                                    
+
+                                    <div class="card">
+                                        <div class="card-header align-items-center d-flex">
+                                            <h4 class="card-title mb-0 flex-grow-1 text-center ">Fee Particulars</h4>
+                                            <div class="flex-shrink-0">
+                                                <div class="form-check form-switch form-switch-right form-switch-md">
+                                                </div>
+                                            </div>
+                                        </div><!-- end card header -->
+                                        <div class="card-body">
+                                            <div class="live-preview">
+
+                                                <!--end row-->
+                                                    
+                                             
+                                                            <div class="card-body mb-3">
+                                                                <div class="live-preview">
+                                                                    <div>
+                                                                        <div class="row g-3 mb-3">
+                                                                            <div class="d-flex  flex-wrap gap-3">
+
+                                                                                <div class="dropdown">
+                                                                                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                                                                        Select
+                                                                                    </button>
+                                                                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                                                                        <a class="dropdown-item" href="#" id="action1">All students</a>
+                                                                                        <a class="dropdown-item" href="#" id="anotherAction">Specific Student</a>
+                                                                                        <a class="dropdown-item" href="#" id="searchItem">Select Class</a>
+                                                                                    </div>
+                                                                                </div>
+                                                                                
+                                                                               
+                                                                            
+
+
+                                                                                <form action="{% url 'eClass:searchClass' %}" method="get" onsubmit="searchClass(event)">
+                                                                                    <div id="searchBoxForSearchItem" style="display: none;">
+                                                                                      <input type="text" name="query" class="form-control" placeholder="Search Class" id="searchBoxItem">
+                                                                                    </div>
+                                                                                </form>
+
+                                                                                <form action="{% url 'student:searchStudent' %}" method="get", onsubmit="searchStudents(event)">
+                                                                                    <div id="searchBoxForAnotherAction" style="display: none;">
+                                                                                        <input type="text" name="query" class="form-control" placeholder="Search Student" id="searchBoxAnotherAction">
+                                                                                    </div>
+                                                                                </form>
+    
+
+
+                                                                            </div>
+
+
+
+
+                                                            <form action="{% url 'myapp:feeParticulars' %}" method="post">
+                                                                                {% csrf_token %}
+
+                                                                                
+                                                                            
+                                                                        <div id="classSelect" style="display: none;">
+                                                                            <select class="form-control" name="fee_class" id="eclass" >
+                                                                            </select> 
+                                                                        </div>
+
+
+
+                                                                        <div id="studentSelect" style="display: none;">
+                                                                            <select class="form-control" name="students" id="student">
+                                                                            </select>
+                                                                        </div>
+
+
+                                                                    <div>
+                                                                        <div class="row g-3 mb-3">
+                                                                            <div class="col-lg-6">
+                                                                                <div class="input-group">
+                                                                                    <span class="input-group-text" id="basic-addon1">Label</span>
+                                                                                    <input type="text"  class="form-control" placeholder="Monthly Tution Fee" aria-label="Username" aria-describedby="basic-addon1" disabled>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="col-lg-6">
+                                                                                <div class="input-group">
+                                                                                    <input type="text"  class="form-control" placeholder="Fixed" disabled aria-label="Recipient's username" aria-describedby="basic-addon2">
+                                                                                    <span class="input-group-text" id="basic-addon2">Prefix Amount</span>
+                                                                                </div>
+                                                                                
+                                                                        </div>
+                                                                    </div>
+                                                                    <div>
+                                                                        <div class="row g-3 mb-3">
+                                                                            <div class="col-lg-6">
+                                                                                <div class="input-group">
+                                                                                    <span class="input-group-text" id="basic-addon1">Label</span>
+                                                                                    <input type="text" name="label" class="form-control" placeholder="Admission Fee" aria-label="Username" aria-describedby="basic-addon1">
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="col-lg-6">
+                                                                                <div class="input-group">
+                                                                                    <input type="number" name="prefixAmount" class="form-control" placeholder="0" aria-label="Recipient's username" aria-describedby="basic-addon2">
+                                                                                    <span class="input-group-text"  id="basic-addon2">Prefix Amount</span>
+                                                                                </div>
+                                                                                
+                                                                        </div>
+                                                                    </div>
+                                                                    
+                                                                    <div>
+                                                                        <div class="row g-3 mb-3">
+                                                                            <div class="col-lg-6">
+                                                                                <div class="input-group">
+                                                                                    <span class="input-group-text" id="basic-addon1">Label</span>
+                                                                                    <input type="text" name="label" class="form-control" placeholder="Username" aria-label="Registration Fee" aria-describedby="basic-addon1">
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="col-lg-6">
+                                                                                <div class="input-group">
+                                                                                    <input type="text" name="prefixAmount" class="form-control" placeholder="0" aria-label="Recipient's username" aria-describedby="basic-addon2">
+                                                                                    <span class="input-group-text"  id="basic-addon2">Prefix Amount</span>
+                                                                                </div>
+                                                                                
+                                                                        </div>
+                                                                    </div>
+                                                                    <div>
+                                                                        <div class="row g-3 mb-3">
+                                                                            <div class="col-lg-6">
+                                                                                <div class="input-group">
+                                                                                    <span class="input-group-text"  id="basic-addon1">Label</span>
+                                                                                    <input type="text" name="label" class="form-control" placeholder="Username" aria-label="Art Material" aria-describedby="basic-addon1">
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="col-lg-6">
+                                                                                <div class="input-group">
+                                                                                    <input type="text" name="prefixAmount" class="form-control" placeholder="0" aria-label="Recipient's username" aria-describedby="basic-addon2">
+                                                                                    <span class="input-group-text"  id="basic-addon2">Prefix Amount</span>
+                                                                                </div>
+                                                                                
+                                                                        </div>
+                                                                    </div>
+                                                                    <div>
+                                                                        <div class="row g-3 mb-3">
+                                                                            <div class="col-lg-6">
+                                                                                <div class="input-group">
+                                                                                    <span class="input-group-text" id="basic-addon1">Label</span>
+                                                                                    <input type="text" name="label" class="form-control" placeholder="Transport" aria-label="Username" aria-describedby="basic-addon1">
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="col-lg-6">
+                                                                                <div class="input-group">
+                                                                                    <input type="text" name="prefixAmount" class="form-control" placeholder="0" aria-label="Recipient's username" aria-describedby="basic-addon2">
+                                                                                    <span class="input-group-text" id="basic-addon2">Prefix Amount</span>
+                                                                                </div>
+                                                                                
+                                                                        </div>
+                                                                    </div>
+                                                                    <div>
+                                                                        <div class="row g-3 mb-3">
+                                                                            <div class="col-lg-6">
+                                                                                <div class="input-group">
+                                                                                    <span class="input-group-text" id="basic-addon1">Label</span>
+                                                                                    <input type="text" name="label"  class="form-control" placeholder="Books" aria-label="Username" aria-describedby="basic-addon1">
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="col-lg-6">
+                                                                                <div class="input-group">
+                                                                                    <input type="text" class="form-control" name="prefixAmount" placeholder="0" aria-label="Recipient's username" aria-describedby="basic-addon2">
+                                                                                    <span class="input-group-text"  id="basic-addon2">Prefix Amount</span>
+                                                                                </div>
+                                                                                
+                                                                        </div>
+                                                                    </div>
+                                                                    <div>
+                                                                        <div class="row g-3 mb-3">
+                                                                            <div class="col-lg-6">
+                                                                                <div class="input-group">
+                                                                                    <span class="input-group-text" id="basic-addon1">Label</span>
+                                                                                    <input type="text" name="label" class="form-control" placeholder="Uniforms" aria-label="Username" aria-describedby="basic-addon1">
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="col-lg-6">
+                                                                                <div class="input-group">
+                                                                                    <input type="text" class="form-control" name="prefixAmount" placeholder="0" aria-label="Recipient's username" aria-describedby="basic-addon2">
+                                                                                    <span class="input-group-text"  id="basic-addon2">Prefix Amount</span>
+                                                                                </div>
+                                                                                
+                                                                        </div>
+                                                                    </div>
+                                                                    <div>
+                                                                        <div class="row g-3 mb-3">
+                                                                            <div class="col-lg-6">
+                                                                                <div class="input-group">
+                                                                                    <span class="input-group-text" id="basic-addon1">Label</span>
+                                                                                    <input type="text" name="label" class="form-control" placeholder="Fines" aria-label="Username" aria-describedby="basic-addon1">
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="col-lg-6">
+                                                                                <div class="input-group">
+                                                                                    <input type="text" class="form-control" name="prefixAmount" placeholder="0" aria-label="Recipient's username" aria-describedby="basic-addon2">
+                                                                                    <span class="input-group-text"  id="basic-addon2">Prefix Amount</span>
+                                                                                </div>
+                                                                                
+                                                                        </div>
+                                                                    </div>
+                                                                    <div>
+                                                                        <div class="row g-3 mb-3">
+                                                                            <div class="col-lg-6">
+                                                                                <div class="input-group">
+                                                                                    <span class="input-group-text" id="basic-addon1">Label</span>
+                                                                                    <input type="text" name="label" class="form-control" placeholder="Others" aria-label="Username" aria-describedby="basic-addon1">
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="col-lg-6">
+                                                                                <div class="input-group">
+                                                                                    <input type="text" class="form-control" name="prefixAmount" placeholder="0" aria-label="Recipient's username" aria-describedby="basic-addon2">
+                                                                                    <span class="input-group-text"  id="basic-addon2">Prefix Amount</span>
+                                                                                </div>
+                                                                                
+                                                                        </div>
+                                                                    </div>
+                                                                    <div>
+                                                                        <div class="row g-3 mb-3">
+                                                                            <div class="col-lg-6">
+                                                                                <div class="input-group">
+                                                                                    <span class="input-group-text" id="basic-addon1">Label</span>
+                                                                                    <input type="text" class="form-control" placeholder="Previous Blanace" disabled aria-label="Username" aria-describedby="basic-addon1">
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="col-lg-6">
+                                                                                <div class="input-group">
+                                                                                    <input type="text" class="form-control" placeholder="Fixed" disabled aria-label="Recipient's username" aria-describedby="basic-addon2">
+                                                                                    <span class="input-group-text" id="basic-addon2">Prefix Amount</span>
+                                                                                </div>
+                                                                                
+                                                                        </div>
+                                                                    </div>
+                                                                    <div>
+                                                                        <div class="row g-3 mb-3">
+                                                                            <div class="col-lg-6">
+                                                                                <div class="input-group">
+                                                                                    <span class="input-group-text" id="basic-addon1">Label</span>
+                                                                                    <input type="text" class="form-control" placeholder="Discount in Fee " disabled aria-label="Username" aria-describedby="basic-addon1">
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="col-lg-6">
+                                                                                <div class="input-group">
+                                                                                    <input type="text" class="form-control" placeholder="Fixed" disabled aria-label="Recipient's username" aria-describedby="basic-addon2">
+                                                                                    <span class="input-group-text" id="basic-addon2">Prefix Amount</span>
+                                                                                </div>
+                                                                                
+                                                                        </div>
+                                                                    </div>
+                                                                    
+                                                                    
+                                                                    
+                                                                </div>
+                                                                
+                                                            </div>
+                                                            <div class="text-center">
+                                                                <button type="submit" class="btn btn-primary">Submit</button>
+                                                            </div>
+                                                        </form>
+                                                        </div>
+                                                    </div>
+                                                    <!--end col-->
+                                                </div>
+                                                <!--end row-->
+                                            </div>
+                                            <div class="d-none code-view">
+                                                
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                </div><!-- end col -->
+                            </div>
+                            <!--end row-->
+
+                            <script>
+                                document.addEventListener('DOMContentLoaded', function() {
+                                    // Get references to the elements
+                                    var searchBoxForSearchItem = document.getElementById('searchBoxForSearchItem');
+                                    var classSelect = document.getElementById('classSelect');
+                                    var studentSelect = document.getElementById('studentSelect');
+                                    
+                                    var searchBoxForAnotherAction = document.getElementById('searchBoxForAnotherAction');
+                                    var dropdownItems = document.querySelectorAll('.dropdown-item');
+                            
+                                    // Function to show or hide the search boxes
+                                    function toggleSearchBoxes(event) {
+                                        event.preventDefault(); // Prevent default anchor behavior
+                            
+                                        // Hide both search boxes initially
+                                        searchBoxForSearchItem.style.display = 'none';
+                                        classSelect.style.display = 'none';
+                                        studentSelect.style.display = 'none';
+                                        searchBoxForAnotherAction.style.display = 'none';
+                            
+                                        // Show the appropriate search box based on the clicked item
+                                        if (event.target.id === 'searchItem') {
+                                            classSelect.style.display = 'block'; // Show search box for "Search Item"
+                                            searchBoxForSearchItem.style.display = 'block';
+                                             
+                                        } else if (event.target.id === 'anotherAction') {
+                                            searchBoxForAnotherAction.style.display = 'block';
+                                            studentSelect.style.display = 'block';
+                                        }
+                                    }
+                            
+                                    // Attach event listener to all dropdown items
+                                    dropdownItems.forEach(function(item) {
+                                        item.addEventListener('click', toggleSearchBoxes);
+                                    });
+                                });
+                            </script>
+
+                            <script>
+                                function searchClass(event) {
+                                event.preventDefault();
+                                
+                                var searchTerm = document.getElementById("searchBoxItem").value;
+                                fetch("{% url 'eClass:searchClass' %}?query=" + searchTerm)
+                                    .then(response => response.json())
+                                    .then(data => {
+                                    const selectElement = document.getElementById("eclass");
+                                
+                                    // Clear any existing options (optional)
+                                    selectElement.innerHTML = '<option value="" selected>Select Class</option>'; // Initial empty option
+                                
+                                    for (const classItem of data) {
+                                        const newOption = document.createElement("option");
+                                        newOption.value = classItem.id; // Assuming 'id' is the unique identifier
+                                        newOption.textContent = classItem.name;
+                                        selectElement.appendChild(newOption);
+                                    }
+                                    })
+                                    .catch(error => {
+                                    console.error("Error fetching search results:", error);
+                                    });
+                                }
+
+
+                                function searchStudents(event) {
+                                event.preventDefault();
+                                
+                                var searchTerm = document.getElementById("searchBoxAnotherAction").value;
+                                fetch("{% url 'student:searchStudent' %}?query=" + searchTerm)
+                                    .then(response => response.json())
+                                    .then(data => {
+                                    const selectElement = document.getElementById("student");
+                                
+                                    selectElement.innerHTML = '<option value="" selected>Select Class</option>'; 
+                                
+                                    for (const studentItem of data) {
+                                        const newOption = document.createElement("option");
+                                        newOption.value = studentItem.id; 
+                                        newOption.textContent = studentItem.name;
+                                        selectElement.appendChild(newOption);
+                                    }
+                                    })
+                                    .catch(error => {
+                                    console.error("Error fetching search results:", error);
+                                    });
+                                }
+                                </script> 
+
+                            <script>
+                                
+                                </script> 
+
+                            
+                {% endblock %}
+
+{% block javascript %}
+<!-- dropzone min --> 
+<script src="{% static 'assets/libs/dropzone/dropzone-min.js' %}"></script>
+<!-- filepond js -->
+<script src="{% static 'assets/libs/filepond/filepond.min.js' %}"></script>
+<script src="{% static 'assets/libs/filepond-plugin-image-preview/filepond-plugin-image-preview.min.js' %}"></script>
+<script src="{% static 'assets/libs/filepond-plugin-file-validate-size/filepond-plugin-file-validate-size.min.js' %}"></script>
+<script src="{% static 'assets/libs/filepond-plugin-image-exif-orientation/filepond-plugin-image-exif-orientation.min.js' %}"></script>
+<script src="{% static 'assets/libs/filepond-plugin-file-encode/filepond-plugin-file-encode.min.js' %}"></script>
+
+<script src="{% static 'assets/js/pages/form-file-upload.init.js' %}"></script>
+
+<script src="{% static 'assets/js/app.js' %}"></script>
+
+{% endblock %}
