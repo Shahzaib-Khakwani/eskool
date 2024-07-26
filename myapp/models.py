@@ -96,9 +96,9 @@ class FailCriteria(models.Model):
     def __str__(self):
         return f'Fail Criteria for {self.gradingSystem.institute.name}'
 
-
-
 class FeeParticulars(models.Model):
+
+
     students = models.ManyToManyField(Student,related_name='feeParticulars', blank=True)
     fee_class = models.ForeignKey(eClass,related_name='feeParticulars', null=True, blank=True, on_delete=models.CASCADE)
     label = models.CharField(max_length=50)
@@ -114,3 +114,10 @@ class FeeParticulars(models.Model):
 
     def __str__(self):
         return self.label
+    
+class Rules(models.Model):
+    user = models.OneToOneField(User, related_name="institute_rules", on_delete=models.CASCADE)
+    rules = models.TextField()
+
+    def __str__(self):
+        return self.user.username

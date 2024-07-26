@@ -1,24 +1,26 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy
-from django.views.generic import TemplateView, CreateView
+from django.views.generic import TemplateView, DeleteView
 from django.views import View
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
-from .models import Institute, FeeParticulars
+
+
+from .models import Institute, FeeParticulars, Bank, Rules
 from eClass.models import eClass
 from student.models import Student
-from .forms import InstituteForm
+from .forms import InstituteForm, BankForm, RulesForm
 
 from django.http import HttpResponse
-# Create your views here.
 
 class HomeView(LoginRequiredMixin, TemplateView):
-    template_name = "index.html"
+    template_name = "myapp/index.html"
 
 
 
 class CreateUpdateInstituteView(View):
-    template_name = "institute_profile.html"
+    template_name = "myapp/institute_profile.html"
 
     def get(self, request):
         institute = get_object_or_404(Institute, user=request.user)
@@ -39,7 +41,7 @@ class CreateUpdateInstituteView(View):
             context = {
                 'name': None,
                 'target_line':None,
-                'logo': institute.logo,
+                'logo': None,
                 'phone_number': None,
                 'website_url': None,
                 'address': None,
@@ -63,7 +65,7 @@ class CreateUpdateInstituteView(View):
 
 
 class feeParticularsView(View):
-    template_name = "feeParticulars.html"
+    template_name = "myapp/feeParticulars.html"
 
     def get(self, request):
         return render(request, self.template_name)
@@ -123,3 +125,102 @@ class feeParticularsView(View):
             'CLASS':student
         })
 
+
+
+
+class BankView(View):
+    template_name = "myapp/bank_profile.html"
+
+
+    def get(self, request, pk=None):
+        try:
+            banks = Bank.objects.filter(user=request.user)
+        except:
+            banks = None
+
+        paginator = Paginator(banks, 2)
+        page = request.GET.get('page')
+
+        try:
+            banks_list = paginator.page(page)
+        except PageNotAnInteger:
+            banks_list = paginator.page(1)
+        except EmptyPage:
+            banks_list = paginator.page(paginator.num_pages)
+
+
+        if pk:
+            bank = get_object_or_404(Bank , pk = pk)
+            context = {'bank':bank,'banks':banks_list, 'paginator_obj': banks_list}
+        else:
+            context = {'bank':None, 'banks':banks_list, 'paginator_obj': banks_list}
+        
+        return render(request, self.template_name, context)
+    
+
+    def post(self,request, pk = None):
+        if pk:
+            bank = get_object_or_404(Bank , pk = pk)
+            form = BankForm(request.POST, request.FILES, instance=bank)
+            if form.is_valid():
+                form.save()
+                return redirect(reverse_lazy('myapp:banks'))
+
+            else:
+                context  = {'form':form}
+                return render(request, self.template_name, context)
+
+        else:
+            form = BankForm(request.POST, request.FILES)
+            if form.is_valid():
+                bank = form.save(commit=False)
+                bank.user = request.user
+                bank.save()
+
+                return redirect(reverse_lazy('myapp:banks'))
+
+            else:
+                context  = {'form':form}
+
+                return render(request, self.template_name, context)
+
+
+def delete_bank(request, pk):
+    bank = get_object_or_404(Bank, pk=pk)
+    # if request.method == "POST":
+    bank.delete()
+        # return redirect('myapp:banks')
+    return redirect('myapp:banks')
+
+
+
+
+class RulesView(View):
+
+    template_name = 'myapp/rules_form.html'
+
+    def get(self, request):
+        try:
+            rules = get_object_or_404(Rules, user = request.user)
+        except:
+            rules = None
+
+        context = {"rules": rules}
+
+        return render(request, self.template_name, context)
+    
+
+
+    def post(self, request):
+        form = RulesForm(request.POST)
+
+        if form.is_valid():
+            rules = form.save(commit=False)
+            rules.user = request.user
+            rules.save()
+
+            context = {'form':None}
+        else:
+            context = {'form':form}
+
+        return render(request, self.template_name, context)

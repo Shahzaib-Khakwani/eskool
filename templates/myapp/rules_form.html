@@ -1,0 +1,129 @@
+{% extends 'base.html' %}
+{% load static %}
+    {% block header %}
+    <!-- quill css -->
+    <link href="{% static 'assets/libs/quill/quill.core.css' %}" rel="stylesheet" type="text/css" />
+    <link href="{% static 'assets/libs/quill/quill.bubble.css' %}" rel="stylesheet" type="text/css" />
+    <link href="{% static 'assets/libs/quill/quill.snow.css' %}" rel="stylesheet" type="text/css" />
+    {% endblock %}
+
+<body>
+    {% block content %}
+
+        <!-- ============================================================== -->
+        <!-- Start right Content here -->
+        <!-- ============================================================== -->
+        <div class="main-content">
+
+            <div class="page-content">
+                <div class="container-fluid">
+
+                    <!-- start page title -->
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+                                <h4 class="mb-sm-0">Rules & Regulations</h4>
+
+                                <div class="page-title-right">
+                                    <ol class="breadcrumb m-0">
+                                        <li class="breadcrumb-item"><a href="javascript: void(0);">General Settings</a></li>
+                                        <li class="breadcrumb-item active">Rules & Regulations</li>
+                                    </ol>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <!-- end page title -->
+
+                   
+
+                    <div class="row mt-2">
+                        <div class="col-lg-12">
+
+                            <div class="justify-content-center d-flex align-items-center mb-3">
+                                <h5 class="mb-0 pb-1 text-center text-decoration-underline">Institute Rules & Regulations</h5>
+                            </div>
+                            <div class="card">
+                                <div class="card-header">
+                                    {% if form.errors %}
+                                                        <div class="alert alert-danger">
+                                                            <strong>Error:</strong> Please correct the errors below.
+                                                            <ul>
+                                                                {% for field, errors in form.errors.items %}
+                                                                    {% for error in errors %}
+                                                                        <li>{{ error }}</li>
+                                                                    {% endfor %}
+                                                                {% endfor %}
+                                                            </ul>
+                                                        </div>
+                                                    {% endif %}
+                                </div><!-- end card header -->
+
+                                <div class="card-body">
+                                    <form action="{% url 'myapp:rules' %}" method="post" >
+                                        {% csrf_token %}
+                                        <div class="bubble-editor" id="editor" style="height: 300px;">
+                                        <h3><span class="ql-size-large">Hello World!</span></h3>
+                                        </div>
+
+                                    <input type="hidden"  id="editor-content" name="rules" >
+                                    <button type="submit" class="btn btn-primary mt-3 ">Submit</button>
+                                </form>
+                                </div><!-- end card-body -->
+                            </div><!-- end card -->
+
+                           
+                        </div>
+                        <!-- end col -->
+                    </div>
+                    <!-- end row -->
+
+                </div> <!-- container-fluid -->
+            </div>
+            <!-- End Page-content -->
+
+
+            
+        </div>
+        <!-- end main content-->
+
+    </div>
+    <!-- END layout-wrapper -->
+    <!-- <script>
+        $(document).ready(function() {
+            var quill = new Quill('#editor', {
+                // Your Quill configuration options
+            });
+    
+            $('form').submit(function() {
+                var editorContent = quill.root.innerHTML;
+                $('#editor-content').val(editorContent);
+                return true; // Make sure to return true to allow form submission
+            });
+        });
+    </script> -->
+
+    <!-- JAVASCRIPT -->
+    <script src="{% static 'assets/libs/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'assets/libs/simplebar/simplebar.min.js' %}"></script>
+    <script src="{% static 'assets/libs/node-waves/waves.min.js' %}"></script>
+    <script src="{% static 'assets/libs/feather-icons/feather.min.js' %}"></script>
+    <script src="{% static 'assets/js/pages/plugins/lord-icon-2.1.0.js' %}"></script>
+    <script src="{% static 'assets/js/plugins.js' %}"></script>
+    
+    
+        
+ 
+        
+    <!-- ckeditor -->
+
+
+    <!-- quill js -->
+    <script src="{% static 'assets/libs/quill/quill.min.js' %}"></script>
+
+    <!-- init js -->
+    <script src="{% static 'assets/js/pages/form-editor.init.js' %}"></script>
+
+    <script src="{% static 'assets/js/app.js' %}"></script>
+    {% endblock %}

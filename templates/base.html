@@ -810,7 +810,7 @@
                     <ul class="navbar-nav" id="navbar-nav">
                         <li class="menu-title"><span data-key="t-menu">Menu</span></li>
                         <li class="nav-item">
-                            <a class="nav-link menu-link" href="{% url 'myapp:home' %}" data-bs-toggle="collapse" role="button" aria-expanded="false" >
+                            <a class="nav-link menu-link" href="{% url 'myapp:home' %}" role="button" aria-expanded="false" >
                                 <i class="ri-dashboard-2-line"></i> 
                                 <span data-key="t-dashboards">Dashboards</span>
                             </a>
@@ -827,6 +827,12 @@
                                     </li>
                                     <li class="nav-item">
                                     <a href="{% url 'myapp:feeParticulars' %}" class="nav-link" data-key="t-chat"> Fee Particulars </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="{% url 'myapp:banks' %}" class="nav-link" data-key="t-chat"> Details for Fee Challans </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="{% url 'myapp:rules' %}" class="nav-link" data-key="t-chat"> Rules & Regulations </a>
                                     </li>
                                     <li class="nav-item">
                                         <a href="#sidebarEmail" class="nav-link" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarEmail" data-key="t-email">

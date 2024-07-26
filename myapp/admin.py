@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import  Bank, GradingSystem, Grade, FailCriteria, Institute, FeeParticulars
+from .models import  Bank, GradingSystem, Grade, FailCriteria, Institute, FeeParticulars, Rules
 
 
 # Register your models here.
@@ -40,4 +40,10 @@ class FailCriteriaAdmin(admin.ModelAdmin):
 @admin.register(FeeParticulars)
 class FeeParticularsAdmin(admin.ModelAdmin):
     list_display = ["id", "prefixAmount", "label", "fee_class"]
+    
+
+
+@admin.register(Rules)
+class RulesFeeParticularsAdmin(admin.ModelAdmin):
+    list_display = ["id", "user"]
     
