@@ -1,0 +1,442 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block header %}
+ <!-- dropzone css -->
+ <link rel="stylesheet" href="{% static 'assets/libs/dropzone/dropzone.css' %}" type="text/css" />
+
+ <!-- Filepond css -->
+ <link rel="stylesheet" href="{% static 'assets/libs/filepond/filepond.min.css' %}" type="text/css" />
+ <link rel="stylesheet" href="{% static 'assets/libs/filepond-plugin-image-preview/filepond-plugin-image-preview.min.css' %}">
+ 
+
+{% endblock %}
+
+{% block content %}
+
+        <!-- ============================================================== -->
+        <!-- Start right Content here -->
+        <!-- ============================================================== -->
+        <div class="main-content">
+
+            <div class="page-content">
+                <div class="container-fluid">
+
+                    <!-- start page title -->
+                    <div class="row">
+                        
+                        <div class="col-12">
+                            <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+                                <h4 class="mb-sm-0">Marks & Grading</h4>
+
+                                <div class="page-title-right">
+                                    <ol class="breadcrumb m-0">
+                                        <li class="breadcrumb-item"><a href="javascript: void(0);">General Settings</a></li>
+                                        <li class="breadcrumb-item active">Marks & Grading</li>
+                                    </ol>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <!-- end page title -->
+
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-body">
+                                    <!-- Nav tabs -->
+                                    <ul class="nav nav-tabs mb-3" role="tablist">
+                                        <li class="nav-item">
+                                            <a class="nav-link active" data-bs-toggle="tab" href="#home" role="tab" aria-selected="false">
+                                                Marks Grading
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link " data-bs-toggle="tab" href="#product1" role="tab" aria-selected="false">
+                                                Fail Criteria
+                                            </a>
+                                        </li>
+                                    </ul>
+                                    <!-- Tab panes -->
+                                    <div class="tab-content  text-muted">
+                                        <div class="tab-pane active" id="home" role="tabpanel">
+                                            <form action="{% url 'myapp:grading' %}" method="post">
+                                                {% csrf_token %}
+                                                <input type="hidden" name="marks" value="marks">
+                                            <div class="rows-container">
+                                                
+                                                {% if grading_system %}
+                                                    
+                                                    {% if grading_system.grades.exists  %}
+                                                        
+                                                    {% for grade in grading_system.grades.all %}
+                                                        <div class="row">
+                                                            <div class="col-xxl-3 col-md-6">
+                                                                <div>
+                                                                    <label for="exampleInputrounded" class="form-label">Grade</label>
+                                                                    <input type="text" name="grade" class="form-control rounded-pill" id="exampleInputrounded" placeholder="Grade" , value="{{ grade.grade }}">
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-xxl-3 col-md-6 d-flex justify-content-center text-center align-items-center">
+                                                                <div>
+                                                                    <label for="exampleInputrounded" class="form-label">% From</label>
+                                                                    <input type="number" name="from" class="form-control rounded-pill w-50 mx-auto" id="exampleInputrounded" placeholder="From" value="{{ grade.fromPercentage }}">
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-xxl-3 col-md-6 d-flex justify-content-center text-center align-items-center">
+                                                                <div> 
+                                                                    <label for="exampleInputrounded" class="form-label">% To</label>
+                                                                    <input type="number" name="to" class="form-control rounded-pill w-50 mx-auto" id="exampleInputrounded" placeholder="To" value="{{ grade.toPercentage }}">
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-xxl-3 col-md-6">
+                                                                <div>
+                                                                    <label for="exampleInputrounded" class="form-label">Status</label>
+                                                                    <input type="text" name="status" class="form-control rounded-pill" id="exampleInputrounded" placeholder="Status" , value="{{ grade.status }}">
+                                                                </div>
+                                                            </div>
+        
+                                                        </div>        
+                                                    {% endfor %}
+
+                                                    {% else %}
+                                                    <div class="row">
+                                                        <div class="col-xxl-3 col-md-6">
+                                                            <div>
+                                                                <label for="exampleInputrounded" class="form-label">Grade</label>
+                                                                <input type="text" name="grade" class="form-control rounded-pill" id="exampleInputrounded" placeholder="Grade">
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-xxl-3 col-md-6 d-flex justify-content-center text-center align-items-center">
+                                                            <div>
+                                                                <label for="exampleInputrounded" class="form-label">% From</label>
+                                                                <input type="number" name="from" class="form-control rounded-pill w-50 mx-auto" id="exampleInputrounded" placeholder="From">
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-xxl-3 col-md-6 d-flex justify-content-center text-center align-items-center">
+                                                            <div> 
+                                                                <label for="exampleInputrounded" class="form-label">% To</label>
+                                                                <input type="number" name="to" class="form-control rounded-pill w-50 mx-auto" id="exampleInputrounded" placeholder="To">
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-xxl-3 col-md-6">
+                                                            <div>
+                                                                <label for="exampleInputrounded" class="form-label">Status</label>
+                                                                <input type="text" name="status" class="form-control rounded-pill" id="exampleInputrounded" placeholder="Status">
+                                                            </div>
+                                                        </div>
+    
+                                                    </div>
+    
+                                                    <div class="row mt-3">
+                                                        <div class="col-xxl-3 col-md-6">
+                                                            <div>
+                                                                <input type="text", name="grade" class="form-control rounded-pill" id="exampleInputrounded" placeholder="Grade">
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-xxl-3 col-md-6 d-flex justify-content-center text-center align-items-center">
+                                                            <div>
+                                                                <input type="number" name="from" class="form-control rounded-pill w-50 mx-auto" id="exampleInputrounded" placeholder="From">
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-xxl-3 col-md-6 d-flex justify-content-center text-center align-items-center">
+                                                            <div>
+                                                                <input type="number" name="to" class="form-control rounded-pill w-50 mx-auto" id="exampleInputrounded" placeholder="To">
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-xxl-3 col-md-6">
+                                                            <div>
+                                                                <input type="text" name="status" class="form-control rounded-pill" id="exampleInputrounded" placeholder="Status">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row mt-3">
+                                                        <div class="col-xxl-3 col-md-6">
+                                                            <div>
+                                                                <input type="text" name="grade" class="form-control rounded-pill" id="exampleInputrounded" placeholder="Grade">
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-xxl-3 col-md-6 d-flex justify-content-center text-center align-items-center">
+                                                            <div>
+                                                                <input type="text" name="from" class="form-control rounded-pill w-50 mx-auto" id="exampleInputrounded" placeholder="From">
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-xxl-3 col-md-6 d-flex justify-content-center text-center align-items-center">
+                                                            <div>
+                                                                <input type="text" name="to" class="form-control rounded-pill w-50 mx-auto" id="exampleInputrounded" placeholder="To">
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-xxl-3 col-md-6">
+                                                            <div>
+                                                                <input type="text" name="status" class="form-control rounded-pill" id="exampleInputrounded" placeholder="Status">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row mt-3">
+                                                        <div class="col-xxl-3 col-md-6">
+                                                            <div>
+                                                                <input type="text" name="grade" class="form-control rounded-pill" id="exampleInputrounded" placeholder="Grade">
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-xxl-3 col-md-6 d-flex justify-content-center text-center align-items-center">
+                                                            <div>
+                                                                <input type="text" name="from" class="form-control rounded-pill w-50 mx-auto" id="exampleInputrounded" placeholder="From">
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-xxl-3 col-md-6 d-flex justify-content-center text-center align-items-center">
+                                                            <div>
+                                                                <input type="text" to="to" class="form-control rounded-pill w-50 mx-auto" id="exampleInputrounded" placeholder="To">
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-xxl-3 col-md-6">
+                                                            <div>
+                                                                <input type="text" name="status" class="form-control rounded-pill" id="exampleInputrounded" placeholder="Status">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row mt-3">
+                                                        <div class="col-xxl-3 col-md-6">
+                                                            <div>
+                                                                <input type="text" name="grade" class="form-control rounded-pill" id="exampleInputrounded" placeholder="Grade">
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-xxl-3 col-md-6 d-flex justify-content-center text-center align-items-center">
+                                                            <div>
+                                                                <input type="text" name="from" class="form-control rounded-pill w-50 mx-auto" id="exampleInputrounded" placeholder="From">
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-xxl-3 col-md-6 d-flex justify-content-center text-center align-items-center">
+                                                            <div>
+                                                                <input type="text" name="to" class="form-control rounded-pill w-50 mx-auto" id="exampleInputrounded" placeholder="To">
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-xxl-3 col-md-6">
+                                                            <div>
+                                                                <input type="text" name="status" class="form-control rounded-pill" id="exampleInputrounded" placeholder="Status">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    {% endif %}
+                                                        
+                                                {% else %}  
+                                                <div class="row">
+                                                    <div class="col-xxl-3 col-md-6">
+                                                        <div>
+                                                            <label for="exampleInputrounded" class="form-label">Grade</label>
+                                                            <input type="text" name="grade" class="form-control rounded-pill" id="exampleInputrounded" placeholder="Grade">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-xxl-3 col-md-6 d-flex justify-content-center text-center align-items-center">
+                                                        <div>
+                                                            <label for="exampleInputrounded" class="form-label">% From</label>
+                                                            <input type="number" name="from" class="form-control rounded-pill w-50 mx-auto" id="exampleInputrounded" placeholder="From">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-xxl-3 col-md-6 d-flex justify-content-center text-center align-items-center">
+                                                        <div> 
+                                                            <label for="exampleInputrounded" class="form-label">% To</label>
+                                                            <input type="number" name="to" class="form-control rounded-pill w-50 mx-auto" id="exampleInputrounded" placeholder="To">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-xxl-3 col-md-6">
+                                                        <div>
+                                                            <label for="exampleInputrounded" class="form-label">Status</label>
+                                                            <input type="text" name="status" class="form-control rounded-pill" id="exampleInputrounded" placeholder="Status">
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+
+                                                <div class="row mt-3">
+                                                    <div class="col-xxl-3 col-md-6">
+                                                        <div>
+                                                            <input type="text", name="grade" class="form-control rounded-pill" id="exampleInputrounded" placeholder="Grade">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-xxl-3 col-md-6 d-flex justify-content-center text-center align-items-center">
+                                                        <div>
+                                                            <input type="number" name="from" class="form-control rounded-pill w-50 mx-auto" id="exampleInputrounded" placeholder="From">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-xxl-3 col-md-6 d-flex justify-content-center text-center align-items-center">
+                                                        <div>
+                                                            <input type="number" name="to" class="form-control rounded-pill w-50 mx-auto" id="exampleInputrounded" placeholder="To">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-xxl-3 col-md-6">
+                                                        <div>
+                                                            <input type="text" name="status" class="form-control rounded-pill" id="exampleInputrounded" placeholder="Status">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row mt-3">
+                                                    <div class="col-xxl-3 col-md-6">
+                                                        <div>
+                                                            <input type="text" name="grade" class="form-control rounded-pill" id="exampleInputrounded" placeholder="Grade">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-xxl-3 col-md-6 d-flex justify-content-center text-center align-items-center">
+                                                        <div>
+                                                            <input type="text" name="from" class="form-control rounded-pill w-50 mx-auto" id="exampleInputrounded" placeholder="From">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-xxl-3 col-md-6 d-flex justify-content-center text-center align-items-center">
+                                                        <div>
+                                                            <input type="text" name="to" class="form-control rounded-pill w-50 mx-auto" id="exampleInputrounded" placeholder="To">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-xxl-3 col-md-6">
+                                                        <div>
+                                                            <input type="text" name="status" class="form-control rounded-pill" id="exampleInputrounded" placeholder="Status">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row mt-3">
+                                                    <div class="col-xxl-3 col-md-6">
+                                                        <div>
+                                                            <input type="text" name="grade" class="form-control rounded-pill" id="exampleInputrounded" placeholder="Grade">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-xxl-3 col-md-6 d-flex justify-content-center text-center align-items-center">
+                                                        <div>
+                                                            <input type="text" name="from" class="form-control rounded-pill w-50 mx-auto" id="exampleInputrounded" placeholder="From">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-xxl-3 col-md-6 d-flex justify-content-center text-center align-items-center">
+                                                        <div>
+                                                            <input type="text" to="to" class="form-control rounded-pill w-50 mx-auto" id="exampleInputrounded" placeholder="To">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-xxl-3 col-md-6">
+                                                        <div>
+                                                            <input type="text" name="status" class="form-control rounded-pill" id="exampleInputrounded" placeholder="Status">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row mt-3">
+                                                    <div class="col-xxl-3 col-md-6">
+                                                        <div>
+                                                            <input type="text" name="grade" class="form-control rounded-pill" id="exampleInputrounded" placeholder="Grade">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-xxl-3 col-md-6 d-flex justify-content-center text-center align-items-center">
+                                                        <div>
+                                                            <input type="text" name="from" class="form-control rounded-pill w-50 mx-auto" id="exampleInputrounded" placeholder="From">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-xxl-3 col-md-6 d-flex justify-content-center text-center align-items-center">
+                                                        <div>
+                                                            <input type="text" name="to" class="form-control rounded-pill w-50 mx-auto" id="exampleInputrounded" placeholder="To">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-xxl-3 col-md-6">
+                                                        <div>
+                                                            <input type="text" name="status" class="form-control rounded-pill" id="exampleInputrounded" placeholder="Status">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            {% endif %}
+
+                                            </div>
+
+                                            <div class="row">
+                                                <div class="col-xxl-12 col-md-12 mt-3 d-flex align-items-center justify-content-center">
+                                                    <div class="mx-auto">
+                                                        <button type="button" class="btn btn-danger minus-btn">-</button>
+                                                        <button type="button" class="btn btn-secondary plus-btn ms-2">+</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-xxl-12 col-md-12 mt-3 d-flex align-items-center justify-content-center">
+                                                    <div class="mx-auto">
+                                                        <button type="submit" class="btn btn-primary">Submit</button>                                                                                       </div>
+                                                </div>
+                                            </div>
+                                            
+                                            
+
+                                        </form>    
+                                        </div>
+
+
+                                        <div class="tab-pane " id="product1" role="tabpanel">
+                                            <h6>Fail Criteria</h6>
+                                            <form action="" method="post">
+                                                {% csrf_token %}
+                                                <input type="hidden" name="fail" value="fail">
+                                                <div class="row my-3 d-flex justify-content-center align-items-center ">
+                                                    <div class="col-xxl-3 col-md-6 my-auto">
+                                                        <div>
+                                                            <label for="exampleInputrounded" class="form-label">Student will be marked as FAILED in the exams if he or she obtains an overall percentage score equal to or below</label>
+                                                            <input type="text" name="overall" class="form-control rounded-pill" id="exampleInputrounded" placeholder="Overiall %" value="{% if grading_system %}{{ grading_system.fail_criteria.overAllPercentage }}{%else%}Overiall {% endif %}">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-xxl-3 col-md-6 my-auto">
+                                                        <div>
+                                                            <label for="exampleInputrounded" class="form-label">OR he or she obtains a Subject percentage score equal to or below</label>
+                                                            <input type="text" name="percentage" class="form-control rounded-pill" id="exampleInputrounded" placeholder="Example 33" value="{% if grading_system %}{{ grading_system.fail_criteria.subjectAllPercentage }} {% endif %}">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-xxl-3 col-md-6 my-auto">
+                                                        <div>
+                                                            <label for="exampleInputrounded" class="form-label">at least in Subjects</label>
+                                                            <input type="text" name="nosubjects" value="{% if grading_system %}{{ grading_system.fail_criteria.noSubject }}{%else%} Example 1 {% endif %}" class="form-control rounded-pill" id="exampleInputrounded" placeholder="Example 1">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-xxl-12 col-md-12 mt-3 d-flex align-items-center justify-content-center">
+                                                        <div class="mx-auto">
+                                                            <button type="submit" class="btn btn-primary">Submit</button>                                                                                       </div>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div><!-- end card-body -->
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <script>
+                            document.addEventListener('DOMContentLoaded', function() {
+                            const rowsContainer = document.querySelector('.rows-container');
+                            const addButton = document.querySelector('.plus-btn');
+                            const removeButton = document.querySelector('.minus-btn');
+
+                            addButton.addEventListener('click', function() {
+                                const lastRow = rowsContainer.querySelector('.row:last-child');
+                                const newRow = lastRow.cloneNode(true);
+                                
+                                newRow.querySelectorAll('input').forEach(input => {
+                                    input.value = '';
+                                });
+
+                                rowsContainer.appendChild(newRow);
+                            });
+
+                            removeButton.addEventListener('click', function() {
+                                const rows = rowsContainer.querySelectorAll('.row');
+                                if (rows.length > 4) {
+                                    rowsContainer.removeChild(rows[rows.length - 1]);
+                                }
+                            });
+                        });
+                    </script>
+
+                                
+
+                            
+{% endblock %}
+
+{% block javascript %}
+
+<script src="{% static 'assets/js/pages/form-file-upload.init.js' %}"></script>
+
+<script src="{% static 'assets/js/app.js' %}"></script>
+
+{% endblock %}

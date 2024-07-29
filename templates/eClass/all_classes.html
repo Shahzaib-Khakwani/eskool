@@ -1,0 +1,369 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+
+{% block header %}
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+<link href="{% static 'assets/libs/sweetalert2/sweetalert2.min.css' %}" rel="stylesheet" type="text/css" />
+
+
+{% endblock %}
+
+{% block content %}
+
+        <!-- ============================================================== -->
+        <!-- Start right Content here -->
+        <!-- ============================================================== -->
+        <div class="main-content">
+
+
+            <div class="page-content">
+                <div class="container-fluid">
+
+                    <!-- start page title -->
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+                                <h4 class="mb-sm-0">All Classes</h4>
+
+                                <div class="page-title-right">
+                                    <ol class="breadcrumb m-0">
+                                        <li class="breadcrumb-item"><a href="javascript: void(0);">Classes</a></li>
+                                        <li class="breadcrumb-item active">All Classes</li>
+                                    </ol>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <!-- end page title -->
+                    <div class="container">
+
+                        
+                            <div class="row">
+                                    {% if classes %}
+                                    
+                                    {% for cls in classes %}
+                                    <div class= "col-lg-4">
+                                        <div class="card border card-border-primary">
+                                            <div class="card-header d-flex justify-content-between">
+                                                <h2 class=" card-title mt-2 mb-0">{{ cls.name }}</h2>
+                                                <div>
+                                                    <a href="{% url 'eClass:updateClass' cls.id %}"><button type="button" class="btn btn-secondary btn-icon waves-effect waves-light"><i class="ri-pencil-fill"></i></button></a>
+                                                    <button type="button" class="btn btn-danger btn-icon waves-effect waves-light" id="sa-warning-{{cls.id}}"><i class="ri-delete-bin-5-line"></i></button>
+                                                </div>
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="row">
+                                                    <div class="col-xxl-12 d-flex justify-content-between">
+                                                        <label for="total_jobs" class="form-label mt-4">Bois </label>
+                                                        <div class="flex-shrink-0">
+                                                            <div id="boysChartContainer{{cls.id}}"></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-xxl-12 d-flex justify-content-between">
+                                                        <label for="interview_chart" class="form-label mt-4">Gurls </label>
+                                                        <div class="flex-shrink-0">
+                                                            
+                                                            <div id="girlsChartContainer{{cls.id}}"></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-xxl-12 d-flex justify-content-between">
+                                                        <label for="hired_chart" class="form-label mt-4">Total </label>
+                                                        <div class="flex-shrink-0">
+                                                            <div id="totalChartContainer{{cls.id}}"></div>
+                                                        </div>
+                                                    </div>
+                                                </div> 
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {% endfor %}
+                                        
+                                        
+                                    {% endif %}
+                            </div>
+                       
+                    </div>
+
+
+
+
+
+                {% if classes %}
+                    
+                    {% for cls in classes %}
+                    {% with male_count=cls.boys female_count=cls.girls male_count=cls.total %}
+                    <script>
+                        var boys_count = parseInt("{{ cls.boys }}");
+                        var girls_count = parseInt("{{ cls.girls }}");
+                        var total_count = parseInt("{{ cls.total }}");
+                        var total_div  =  document.querySelector("#totalChartContainer{{cls.id}}")
+                        var girls_div  =  document.querySelector("#girlsChartContainer{{cls.id}}")
+                        var boys_div  =  document.querySelector("#boysChartContainer{{cls.id}}")
+
+                                var total_options = {
+                                series: [boys_count, girls_count],
+                                chart: {
+                                    type: 'donut',
+                                    height: 150 
+                                },
+                                plotOptions: {
+                                    pie: {
+                                        donut: {
+                                            size: '70%',
+                                            labels: {
+                                                show: true,  
+                                                name: {
+                                                    show: true
+                                                },
+                                                value: {
+                                                    show: true,
+                                                    fontSize: '14px',
+                                                    color: '#fff',
+                                                    offsetY: 7
+                                                },
+                                                total: {
+                                                    show: true,
+                                                    label: 'Total',
+                                                    color: '#fff',
+                                                    formatter: function(w) {
+                                                        return ""+total_count+"";
+                                                    }
+                                            },}
+                                        }
+                                    }
+                                },
+                                legend: false, 
+                                colors: ['#dc3545', '#ffc107'], 
+                                labels: ['Boys', 'Girls'], 
+                                responsive: [{
+                                    breakpoint: 100,
+                                    options: {
+                                        chart: {
+                                            width: 100,
+                                            height: 100,
+                                        },
+                                        legend: {
+                                            position: 'bottom'
+                                        }
+                                    }
+                                }]
+                            };
+
+
+                            
+                        var chart = new ApexCharts(total_div, total_options);
+                        chart.render();
+
+                        var boys_options = {
+                                series: [boys_count],
+                                chart: {
+                                    type: 'donut',
+                                    height: 150 
+                                },
+                                plotOptions: {
+                                    pie: {
+                                        donut: {
+                                            size: '70%',
+                                            labels: {
+                                                show: true,  
+                                                name: {
+                                                    show: true
+                                                },
+                                                value: {
+                                                    show: true,
+                                                    fontSize: '14px',
+                                                    color: '#fff',
+                                                    offsetY: 7
+                                                },
+                                                total: {
+                                                    show: true,
+                                                    label: 'Total',
+                                                    color: '#fff',
+                                                    formatter: function(w) {
+                                                        return total_count;  // Display the total value
+                                                    },
+                                            },}
+                                        }
+                                    }
+                                },
+                                legend: false, 
+                                colors: ['#dc3545'], 
+                                responsive: [{
+                                    breakpoint: 100,
+                                    options: {
+                                        chart: {
+                                            width: 100,
+                                            height: 100,
+                                        },
+                                        legend: {
+                                            position: 'bottom'
+                                        }
+                                    }
+                                }]
+                            };
+
+
+                            
+                        var bchart = new ApexCharts(boys_div, boys_options);
+                        bchart.render();
+
+
+                        var girls_options = {
+                                series: [girls_count],
+                                chart: {
+                                    type: 'donut',
+                                    height: 150 
+                                },
+                                plotOptions: {
+                                    pie: {
+                                        donut: {
+                                            size: '70%',
+                                            labels: {
+                                                show: true,  
+                                                name: {
+                                                    show: true
+                                                },
+                                                value: {
+                                                    show: true,
+                                                    fontSize: '14px',
+                                                    color: '#fff',
+                                                    offsetY: 7
+                                                },
+                                                total: {
+                                                    show: true,
+                                                    label: 'Total',
+                                                    color: '#fff',
+                                                    formatter: function(w) {
+                                                        return total_count;  // Display the total value
+                                                    },
+                                            },}
+                                        }
+                                    }
+                                },
+                                legend: false, 
+                                colors: ['#ffc107'], 
+                                responsive: [{
+                                    breakpoint: 100,
+                                    options: {
+                                        chart: {
+                                            width: 100,
+                                            height: 100,
+                                        },
+                                        legend: {
+                                            position: 'bottom'
+                                        }
+                                    }
+                                }]
+                            };
+
+
+                            
+                        var gchart = new ApexCharts(girls_div, girls_options);
+                        gchart.render();
+                        
+                        var csrfToken = "{{ csrf_token }}"
+
+                        document.getElementById("sa-warning-{{cls.id}}")&&document.getElementById("sa-warning-{{cls.id}}").addEventListener("click",
+    
+                        function(){Swal.fire({
+                                    title:"Are you sure!!!",
+                                    text:"You won't be able to revert this!",
+                                    icon:"warning",showCancelButton:!0,
+                                    confirmButtonClass:"btn btn-primary w-xs me-2 mt-2",
+                                    cancelButtonClass:"btn btn-danger w-xs mt-2",
+                                    confirmButtonText:"Yes, delete it!",
+                                    buttonsStyling:!1,
+                                    showCloseButton:!0
+                                }).then(function(t){t.value&&
+                                    console.log("reached");
+                                    fetch("{% url 'eClass:deleteClass' cls.id %}", {
+                                        method: 'POST',
+                                        headers: {
+                                            'X-CSRFToken': csrfToken,
+                                            'Content-Type': 'application/json'
+                                        },
+                                        body: JSON.stringify({}) 
+                                    }).then(response => {
+                                        console.log(response);
+                                        if (response.ok) {
+                                            
+                                            Swal.fire({
+                                                title: "Deleted!",
+                                                text: "Class has been deleted.",
+                                                icon: "success",
+                                                confirmButtonClass: "btn btn-primary w-xs mt-2",
+                                                buttonsStyling: false
+                                            }).then(() => {
+                                                setTimeout(function() {
+                                                    window.location.href = "{% url 'eClass:classes' %}";
+                                                }, 1000);
+                                            });
+                                        } else {
+                                            Swal.fire({
+                                                title: "Error!",
+                                                text: "There was an issue deleting the class.",
+                                                icon: "error",
+                                                confirmButtonClass: "btn btn-primary w-xs mt-2",
+                                                buttonsStyling: false
+                                            });
+                                        }
+                                    }).catch(error => {
+                                        Swal.fire({
+                                            title: "Error!",
+                                            text: "Network error. Please try again.",
+                                            icon: "error",
+                                            confirmButtonClass: "btn btn-primary w-xs mt-2",
+                                            buttonsStyling: false
+                                        });
+                                    });
+                                })
+                            }
+                    );
+                
+                
+                    </script>
+
+                {% endwith %}                        
+                    {% endfor %}
+                    
+                {% endif %}
+                    
+
+
+
+
+
+
+
+
+
+
+
+
+                        <!-- list.js min js -->
+    <script src="{% static 'assets/libs/list.js/list.min.js' %}"></script>
+       <!-- Sweet Alerts js -->
+       <script src="{% static 'assets/libs/sweetalert2/sweetalert2.min.js' %}"></script>
+
+       <!-- Sweet alert init js-->
+       <!-- <script src="{% static 'assets/js/pages/sweetalerts.init.js' %}"></script> -->
+   
+
+                        
+
+
+    
+
+{% endblock %}
+{% block javascript %}
+
+<script src="{% static 'assets/js/app.js' %}"></script>
+
+{% endblock %}

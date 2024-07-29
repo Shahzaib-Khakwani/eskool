@@ -1,7 +1,7 @@
 from django.contrib import admin
-from .models import  Bank, GradingSystem, Grade, FailCriteria, Institute, FeeParticulars, Rules
+from .models import  Bank,AccountSettings, GradingSystem, Grade, FailCriteria, Institute, FeeParticulars, Rules, GradingSystem, Grade, FailCriteria
 
-
+from django.utils.html import format_html
 # Register your models here.
 
 
@@ -24,11 +24,20 @@ class GradeInLine(admin.TabularInline):
     raw_id_fields = ['gradingSystem']
 
 
+class FailCriteriaInLine(admin.TabularInline):
+    model = FailCriteria
+    raw_id_fields = ['gradingSystem']
+
+
 
 @admin.register(GradingSystem)
 class GradingSystemAdmin(admin.ModelAdmin):
-    list_display = ['id']
-    inlines = [GradeInLine]
+    def grade_list(self, obj):
+        return format_html('<br>'.join([grade.grade for grade in obj.grades.all()]))
+
+    grade_list.short_description = 'grades'
+    list_display = ['id', 'user', 'grade_list']
+    inlines = [GradeInLine, FailCriteriaInLine]
 
 
 
@@ -47,3 +56,20 @@ class FeeParticularsAdmin(admin.ModelAdmin):
 class RulesFeeParticularsAdmin(admin.ModelAdmin):
     list_display = ["id", "user"]
     
+
+# @admin.register(GradingSystem)
+# class GradingSystemAdmin(admin.ModelAdmin):
+
+#     def grade_list(self, obj):
+#         return format_html('<br>'.join([grade.grade for grade in obj.grades.all()]))
+
+#     grade_list.short_description = 'grades'
+
+#     list_display = ('name', )
+#     list_display = ["id", "user", "grade_list"]
+    
+
+
+@admin.register(AccountSettings)
+class AccountSettingsAdmin(admin.ModelAdmin):
+    list_display = ["id", "user", "timezone", "country", "currency"]

@@ -60,263 +60,264 @@
                                         <div class="card-body">
                                             <div class="live-preview">
 
-                                                <!--end row-->
+                                                
                                                     
                                              
-                                                            <div class="card-body mb-3">
-                                                                <div class="live-preview">
-                                                                    <div>
-                                                                        <div class="row g-3 mb-3">
-                                                                            <div class="d-flex  flex-wrap gap-3">
+                                                <div class="card-body mb-3">
+                                                    <div class="live-preview">
+                                                        <div>
+                                                            <div class="row g-3 mb-3">
+                                                                <div class="d-flex  flex-wrap gap-3">
 
-                                                                                <div class="dropdown">
-                                                                                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                                                                                        Select
-                                                                                    </button>
-                                                                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                                                                        <a class="dropdown-item" href="#" id="action1">All students</a>
-                                                                                        <a class="dropdown-item" href="#" id="anotherAction">Specific Student</a>
-                                                                                        <a class="dropdown-item" href="#" id="searchItem">Select Class</a>
-                                                                                    </div>
-                                                                                </div>
-                                                                                
-                                                                               
-                                                                            
-
-
-                                                                                <form action="{% url 'eClass:searchClass' %}" method="get" onsubmit="searchClass(event)">
-                                                                                    <div id="searchBoxForSearchItem" style="display: none;">
-                                                                                      <input type="text" name="query" class="form-control" placeholder="Search Class" id="searchBoxItem">
-                                                                                    </div>
-                                                                                </form>
-
-                                                                                <form action="{% url 'student:searchStudent' %}" method="get", onsubmit="searchStudents(event)">
-                                                                                    <div id="searchBoxForAnotherAction" style="display: none;">
-                                                                                        <input type="text" name="query" class="form-control" placeholder="Search Student" id="searchBoxAnotherAction">
-                                                                                    </div>
-                                                                                </form>
-    
-
-
-                                                                            </div>
-
-
-
-
-                                                            <form action="{% url 'myapp:feeParticulars' %}" method="post">
-                                                                                {% csrf_token %}
-
-                                                                                
-                                                                            
-                                                                        <div id="classSelect" style="display: none;">
-                                                                            <select class="form-control" name="fee_class" id="eclass" >
-                                                                            </select> 
-                                                                        </div>
-
-
-
-                                                                        <div id="studentSelect" style="display: none;">
-                                                                            <select class="form-control" name="students" id="student">
-                                                                            </select>
-                                                                        </div>
-
-
-                                                                    <div>
-                                                                        <div class="row g-3 mb-3">
-                                                                            <div class="col-lg-6">
-                                                                                <div class="input-group">
-                                                                                    <span class="input-group-text" id="basic-addon1">Label</span>
-                                                                                    <input type="text"  class="form-control" placeholder="Monthly Tution Fee" aria-label="Username" aria-describedby="basic-addon1" disabled>
-                                                                                </div>
-                                                                            </div>
-                                                                            <div class="col-lg-6">
-                                                                                <div class="input-group">
-                                                                                    <input type="text"  class="form-control" placeholder="Fixed" disabled aria-label="Recipient's username" aria-describedby="basic-addon2">
-                                                                                    <span class="input-group-text" id="basic-addon2">Prefix Amount</span>
-                                                                                </div>
-                                                                                
-                                                                        </div>
-                                                                    </div>
-                                                                    <div>
-                                                                        <div class="row g-3 mb-3">
-                                                                            <div class="col-lg-6">
-                                                                                <div class="input-group">
-                                                                                    <span class="input-group-text" id="basic-addon1">Label</span>
-                                                                                    <input type="text" name="label" class="form-control" placeholder="Admission Fee" aria-label="Username" aria-describedby="basic-addon1">
-                                                                                </div>
-                                                                            </div>
-                                                                            <div class="col-lg-6">
-                                                                                <div class="input-group">
-                                                                                    <input type="number" name="prefixAmount" class="form-control" placeholder="0" aria-label="Recipient's username" aria-describedby="basic-addon2">
-                                                                                    <span class="input-group-text"  id="basic-addon2">Prefix Amount</span>
-                                                                                </div>
-                                                                                
-                                                                        </div>
-                                                                    </div>
-                                                                    
-                                                                    <div>
-                                                                        <div class="row g-3 mb-3">
-                                                                            <div class="col-lg-6">
-                                                                                <div class="input-group">
-                                                                                    <span class="input-group-text" id="basic-addon1">Label</span>
-                                                                                    <input type="text" name="label" class="form-control" placeholder="Username" aria-label="Registration Fee" aria-describedby="basic-addon1">
-                                                                                </div>
-                                                                            </div>
-                                                                            <div class="col-lg-6">
-                                                                                <div class="input-group">
-                                                                                    <input type="text" name="prefixAmount" class="form-control" placeholder="0" aria-label="Recipient's username" aria-describedby="basic-addon2">
-                                                                                    <span class="input-group-text"  id="basic-addon2">Prefix Amount</span>
-                                                                                </div>
-                                                                                
-                                                                        </div>
-                                                                    </div>
-                                                                    <div>
-                                                                        <div class="row g-3 mb-3">
-                                                                            <div class="col-lg-6">
-                                                                                <div class="input-group">
-                                                                                    <span class="input-group-text"  id="basic-addon1">Label</span>
-                                                                                    <input type="text" name="label" class="form-control" placeholder="Username" aria-label="Art Material" aria-describedby="basic-addon1">
-                                                                                </div>
-                                                                            </div>
-                                                                            <div class="col-lg-6">
-                                                                                <div class="input-group">
-                                                                                    <input type="text" name="prefixAmount" class="form-control" placeholder="0" aria-label="Recipient's username" aria-describedby="basic-addon2">
-                                                                                    <span class="input-group-text"  id="basic-addon2">Prefix Amount</span>
-                                                                                </div>
-                                                                                
-                                                                        </div>
-                                                                    </div>
-                                                                    <div>
-                                                                        <div class="row g-3 mb-3">
-                                                                            <div class="col-lg-6">
-                                                                                <div class="input-group">
-                                                                                    <span class="input-group-text" id="basic-addon1">Label</span>
-                                                                                    <input type="text" name="label" class="form-control" placeholder="Transport" aria-label="Username" aria-describedby="basic-addon1">
-                                                                                </div>
-                                                                            </div>
-                                                                            <div class="col-lg-6">
-                                                                                <div class="input-group">
-                                                                                    <input type="text" name="prefixAmount" class="form-control" placeholder="0" aria-label="Recipient's username" aria-describedby="basic-addon2">
-                                                                                    <span class="input-group-text" id="basic-addon2">Prefix Amount</span>
-                                                                                </div>
-                                                                                
-                                                                        </div>
-                                                                    </div>
-                                                                    <div>
-                                                                        <div class="row g-3 mb-3">
-                                                                            <div class="col-lg-6">
-                                                                                <div class="input-group">
-                                                                                    <span class="input-group-text" id="basic-addon1">Label</span>
-                                                                                    <input type="text" name="label"  class="form-control" placeholder="Books" aria-label="Username" aria-describedby="basic-addon1">
-                                                                                </div>
-                                                                            </div>
-                                                                            <div class="col-lg-6">
-                                                                                <div class="input-group">
-                                                                                    <input type="text" class="form-control" name="prefixAmount" placeholder="0" aria-label="Recipient's username" aria-describedby="basic-addon2">
-                                                                                    <span class="input-group-text"  id="basic-addon2">Prefix Amount</span>
-                                                                                </div>
-                                                                                
-                                                                        </div>
-                                                                    </div>
-                                                                    <div>
-                                                                        <div class="row g-3 mb-3">
-                                                                            <div class="col-lg-6">
-                                                                                <div class="input-group">
-                                                                                    <span class="input-group-text" id="basic-addon1">Label</span>
-                                                                                    <input type="text" name="label" class="form-control" placeholder="Uniforms" aria-label="Username" aria-describedby="basic-addon1">
-                                                                                </div>
-                                                                            </div>
-                                                                            <div class="col-lg-6">
-                                                                                <div class="input-group">
-                                                                                    <input type="text" class="form-control" name="prefixAmount" placeholder="0" aria-label="Recipient's username" aria-describedby="basic-addon2">
-                                                                                    <span class="input-group-text"  id="basic-addon2">Prefix Amount</span>
-                                                                                </div>
-                                                                                
-                                                                        </div>
-                                                                    </div>
-                                                                    <div>
-                                                                        <div class="row g-3 mb-3">
-                                                                            <div class="col-lg-6">
-                                                                                <div class="input-group">
-                                                                                    <span class="input-group-text" id="basic-addon1">Label</span>
-                                                                                    <input type="text" name="label" class="form-control" placeholder="Fines" aria-label="Username" aria-describedby="basic-addon1">
-                                                                                </div>
-                                                                            </div>
-                                                                            <div class="col-lg-6">
-                                                                                <div class="input-group">
-                                                                                    <input type="text" class="form-control" name="prefixAmount" placeholder="0" aria-label="Recipient's username" aria-describedby="basic-addon2">
-                                                                                    <span class="input-group-text"  id="basic-addon2">Prefix Amount</span>
-                                                                                </div>
-                                                                                
-                                                                        </div>
-                                                                    </div>
-                                                                    <div>
-                                                                        <div class="row g-3 mb-3">
-                                                                            <div class="col-lg-6">
-                                                                                <div class="input-group">
-                                                                                    <span class="input-group-text" id="basic-addon1">Label</span>
-                                                                                    <input type="text" name="label" class="form-control" placeholder="Others" aria-label="Username" aria-describedby="basic-addon1">
-                                                                                </div>
-                                                                            </div>
-                                                                            <div class="col-lg-6">
-                                                                                <div class="input-group">
-                                                                                    <input type="text" class="form-control" name="prefixAmount" placeholder="0" aria-label="Recipient's username" aria-describedby="basic-addon2">
-                                                                                    <span class="input-group-text"  id="basic-addon2">Prefix Amount</span>
-                                                                                </div>
-                                                                                
-                                                                        </div>
-                                                                    </div>
-                                                                    <div>
-                                                                        <div class="row g-3 mb-3">
-                                                                            <div class="col-lg-6">
-                                                                                <div class="input-group">
-                                                                                    <span class="input-group-text" id="basic-addon1">Label</span>
-                                                                                    <input type="text" class="form-control" placeholder="Previous Blanace" disabled aria-label="Username" aria-describedby="basic-addon1">
-                                                                                </div>
-                                                                            </div>
-                                                                            <div class="col-lg-6">
-                                                                                <div class="input-group">
-                                                                                    <input type="text" class="form-control" placeholder="Fixed" disabled aria-label="Recipient's username" aria-describedby="basic-addon2">
-                                                                                    <span class="input-group-text" id="basic-addon2">Prefix Amount</span>
-                                                                                </div>
-                                                                                
-                                                                        </div>
-                                                                    </div>
-                                                                    <div>
-                                                                        <div class="row g-3 mb-3">
-                                                                            <div class="col-lg-6">
-                                                                                <div class="input-group">
-                                                                                    <span class="input-group-text" id="basic-addon1">Label</span>
-                                                                                    <input type="text" class="form-control" placeholder="Discount in Fee " disabled aria-label="Username" aria-describedby="basic-addon1">
-                                                                                </div>
-                                                                            </div>
-                                                                            <div class="col-lg-6">
-                                                                                <div class="input-group">
-                                                                                    <input type="text" class="form-control" placeholder="Fixed" disabled aria-label="Recipient's username" aria-describedby="basic-addon2">
-                                                                                    <span class="input-group-text" id="basic-addon2">Prefix Amount</span>
-                                                                                </div>
-                                                                                
+                                                                    <div class="dropdown">
+                                                                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                                                            Select
+                                                                        </button>
+                                                                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                                                            <a class="dropdown-item" href="#" id="action1">All students</a>
+                                                                            <a class="dropdown-item" href="#" id="anotherAction">Specific Student</a>
+                                                                            <a class="dropdown-item" href="#" id="searchItem">Select Class</a>
                                                                         </div>
                                                                     </div>
                                                                     
                                                                     
+                                                                
+
+
+                                                                    <form action="{% url 'eClass:searchClass' %}" method="get" onsubmit="searchClass(event)">
+                                                                        <div id="searchBoxForSearchItem" style="display: none;">
+                                                                            <input type="text" name="query" class="form-control" placeholder="Search Class" id="searchBoxItem">
+                                                                        </div>
+                                                                    </form>
+
+                                                                    <form action="{% url 'student:searchStudent' %}" method="get", onsubmit="searchStudents(event)">
+                                                                        <div id="searchBoxForAnotherAction" style="display: none;">
+                                                                            <input type="text" name="query" class="form-control" placeholder="Search Student" id="searchBoxAnotherAction">
+                                                                        </div>
+                                                                    </form>
+
+
+
+                                                                </div>
+
+
+
+
+                                                                <form action="{% url 'myapp:feeParticulars' %}" method="post">
+                                                                                    {% csrf_token %}
+
+                                                                                    
+                                                                                
+                                                                            <div id="classSelect" style="display: none;">
+                                                                                <select class="form-control" name="fee_class" id="eclass" >
+                                                                                </select> 
+                                                                            </div>
+
+
+
+                                                                            <div id="studentSelect" style="display: none;">
+                                                                                <select class="form-control" name="students" id="student">
+                                                                                </select>
+                                                                            </div>
+
+
+                                                                        <div>
+                                                                            <div class="row g-3 mb-3">
+                                                                                <div class="col-lg-6">
+                                                                                    <div class="input-group">
+                                                                                        <span class="input-group-text" id="basic-addon1">Label</span>
+                                                                                        <input type="text"  class="form-control" placeholder="Monthly Tution Fee" aria-label="Username" aria-describedby="basic-addon1" disabled>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-lg-6">
+                                                                                    <div class="input-group">
+                                                                                        <input type="text"  class="form-control" placeholder="Fixed" disabled aria-label="Recipient's username" aria-describedby="basic-addon2">
+                                                                                        <span class="input-group-text" id="basic-addon2">Prefix Amount</span>
+                                                                                    </div>
+                                                                                    
+                                                                            </div>
+                                                                        </div>
+                                                                        <div>
+                                                                            <div class="row g-3 mb-3">
+                                                                                <div class="col-lg-6">
+                                                                                    <div class="input-group">
+                                                                                        <span class="input-group-text" id="basic-addon1">Label</span>
+                                                                                        <input type="text" name="label" class="form-control" placeholder="Admission Fee" aria-label="Username" aria-describedby="basic-addon1">
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-lg-6">
+                                                                                    <div class="input-group">
+                                                                                        <input type="number" name="prefixAmount" class="form-control" placeholder="0" aria-label="Recipient's username" aria-describedby="basic-addon2">
+                                                                                        <span class="input-group-text"  id="basic-addon2">Prefix Amount</span>
+                                                                                    </div>
+                                                                                    
+                                                                            </div>
+                                                                        </div>
+                                                                        
+                                                                        <div>
+                                                                            <div class="row g-3 mb-3">
+                                                                                <div class="col-lg-6">
+                                                                                    <div class="input-group">
+                                                                                        <span class="input-group-text" id="basic-addon1">Label</span>
+                                                                                        <input type="text" name="label" class="form-control" placeholder="Username" aria-label="Registration Fee" aria-describedby="basic-addon1">
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-lg-6">
+                                                                                    <div class="input-group">
+                                                                                        <input type="text" name="prefixAmount" class="form-control" placeholder="0" aria-label="Recipient's username" aria-describedby="basic-addon2">
+                                                                                        <span class="input-group-text"  id="basic-addon2">Prefix Amount</span>
+                                                                                    </div>
+                                                                                    
+                                                                            </div>
+                                                                        </div>
+                                                                        <div>
+                                                                            <div class="row g-3 mb-3">
+                                                                                <div class="col-lg-6">
+                                                                                    <div class="input-group">
+                                                                                        <span class="input-group-text"  id="basic-addon1">Label</span>
+                                                                                        <input type="text" name="label" class="form-control" placeholder="Username" aria-label="Art Material" aria-describedby="basic-addon1">
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-lg-6">
+                                                                                    <div class="input-group">
+                                                                                        <input type="text" name="prefixAmount" class="form-control" placeholder="0" aria-label="Recipient's username" aria-describedby="basic-addon2">
+                                                                                        <span class="input-group-text"  id="basic-addon2">Prefix Amount</span>
+                                                                                    </div>
+                                                                                    
+                                                                            </div>
+                                                                        </div>
+                                                                        <div>
+                                                                            <div class="row g-3 mb-3">
+                                                                                <div class="col-lg-6">
+                                                                                    <div class="input-group">
+                                                                                        <span class="input-group-text" id="basic-addon1">Label</span>
+                                                                                        <input type="text" name="label" class="form-control" placeholder="Transport" aria-label="Username" aria-describedby="basic-addon1">
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-lg-6">
+                                                                                    <div class="input-group">
+                                                                                        <input type="text" name="prefixAmount" class="form-control" placeholder="0" aria-label="Recipient's username" aria-describedby="basic-addon2">
+                                                                                        <span class="input-group-text" id="basic-addon2">Prefix Amount</span>
+                                                                                    </div>
+                                                                                    
+                                                                            </div>
+                                                                        </div>
+                                                                        <div>
+                                                                            <div class="row g-3 mb-3">
+                                                                                <div class="col-lg-6">
+                                                                                    <div class="input-group">
+                                                                                        <span class="input-group-text" id="basic-addon1">Label</span>
+                                                                                        <input type="text" name="label"  class="form-control" placeholder="Books" aria-label="Username" aria-describedby="basic-addon1">
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-lg-6">
+                                                                                    <div class="input-group">
+                                                                                        <input type="text" class="form-control" name="prefixAmount" placeholder="0" aria-label="Recipient's username" aria-describedby="basic-addon2">
+                                                                                        <span class="input-group-text"  id="basic-addon2">Prefix Amount</span>
+                                                                                    </div>
+                                                                                    
+                                                                            </div>
+                                                                        </div>
+                                                                        <div>
+                                                                            <div class="row g-3 mb-3">
+                                                                                <div class="col-lg-6">
+                                                                                    <div class="input-group">
+                                                                                        <span class="input-group-text" id="basic-addon1">Label</span>
+                                                                                        <input type="text" name="label" class="form-control" placeholder="Uniforms" aria-label="Username" aria-describedby="basic-addon1">
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-lg-6">
+                                                                                    <div class="input-group">
+                                                                                        <input type="text" class="form-control" name="prefixAmount" placeholder="0" aria-label="Recipient's username" aria-describedby="basic-addon2">
+                                                                                        <span class="input-group-text"  id="basic-addon2">Prefix Amount</span>
+                                                                                    </div>
+                                                                                    
+                                                                            </div>
+                                                                        </div>
+                                                                        <div>
+                                                                            <div class="row g-3 mb-3">
+                                                                                <div class="col-lg-6">
+                                                                                    <div class="input-group">
+                                                                                        <span class="input-group-text" id="basic-addon1">Label</span>
+                                                                                        <input type="text" name="label" class="form-control" placeholder="Fines" aria-label="Username" aria-describedby="basic-addon1">
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-lg-6">
+                                                                                    <div class="input-group">
+                                                                                        <input type="text" class="form-control" name="prefixAmount" placeholder="0" aria-label="Recipient's username" aria-describedby="basic-addon2">
+                                                                                        <span class="input-group-text"  id="basic-addon2">Prefix Amount</span>
+                                                                                    </div>
+                                                                                    
+                                                                            </div>
+                                                                        </div>
+                                                                        <div>
+                                                                            <div class="row g-3 mb-3">
+                                                                                <div class="col-lg-6">
+                                                                                    <div class="input-group">
+                                                                                        <span class="input-group-text" id="basic-addon1">Label</span>
+                                                                                        <input type="text" name="label" class="form-control" placeholder="Others" aria-label="Username" aria-describedby="basic-addon1">
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-lg-6">
+                                                                                    <div class="input-group">
+                                                                                        <input type="text" class="form-control" name="prefixAmount" placeholder="0" aria-label="Recipient's username" aria-describedby="basic-addon2">
+                                                                                        <span class="input-group-text"  id="basic-addon2">Prefix Amount</span>
+                                                                                    </div>
+                                                                                    
+                                                                            </div>
+                                                                        </div>
+                                                                        <div>
+                                                                            <div class="row g-3 mb-3">
+                                                                                <div class="col-lg-6">
+                                                                                    <div class="input-group">
+                                                                                        <span class="input-group-text" id="basic-addon1">Label</span>
+                                                                                        <input type="text" class="form-control" placeholder="Previous Blanace" disabled aria-label="Username" aria-describedby="basic-addon1">
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-lg-6">
+                                                                                    <div class="input-group">
+                                                                                        <input type="text" class="form-control" placeholder="Fixed" disabled aria-label="Recipient's username" aria-describedby="basic-addon2">
+                                                                                        <span class="input-group-text" id="basic-addon2">Prefix Amount</span>
+                                                                                    </div>
+                                                                                    
+                                                                            </div>
+                                                                        </div>
+                                                                        <div>
+                                                                            <div class="row g-3 mb-3">
+                                                                                <div class="col-lg-6">
+                                                                                    <div class="input-group">
+                                                                                        <span class="input-group-text" id="basic-addon1">Label</span>
+                                                                                        <input type="text" class="form-control" placeholder="Discount in Fee " disabled aria-label="Username" aria-describedby="basic-addon1">
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-lg-6">
+                                                                                    <div class="input-group">
+                                                                                        <input type="text" class="form-control" placeholder="Fixed" disabled aria-label="Recipient's username" aria-describedby="basic-addon2">
+                                                                                        <span class="input-group-text" id="basic-addon2">Prefix Amount</span>
+                                                                                    </div>
+                                                                                    
+                                                                            </div>
+                                                                        </div>
+                                                                        
+                                                                        
+                                                                        
+                                                                    </div>
                                                                     
                                                                 </div>
-                                                                
+                                                                <div class="text-center">
+                                                                    <button type="submit" class="btn btn-primary">Submit</button>
+                                                                </div>
+                                                                </form>
                                                             </div>
-                                                            <div class="text-center">
-                                                                <button type="submit" class="btn btn-primary">Submit</button>
-                                                            </div>
-                                                        </form>
                                                         </div>
                                                     </div>
-                                                    <!--end col-->
                                                 </div>
+                                                        
+                                                    <!--end col-->
+                                                
                                                 <!--end row-->
                                             </div>
-                                            <div class="d-none code-view">
-                                                
-                                            </div>
+                                            
                                         </div>
                                     </div>
 

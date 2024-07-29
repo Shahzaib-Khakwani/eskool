@@ -1,11 +1,13 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.core.validators import URLValidator
-from django_countries.fields import CountryField
+
 from django_countries.fields import CountryField
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
+
+from timezone_field import TimeZoneField
 
 from student.models import Student
 from eClass.models import eClass
@@ -68,12 +70,12 @@ class Bank(models.Model):
 
 
 class GradingSystem(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    institute = models.OneToOneField(Institute, related_name = 'grading_system' ,  on_delete=models.CASCADE)
+    user = models.OneToOneField(User,related_name="grading_system",  on_delete=models.CASCADE)
+    # institute = models.OneToOneField(Institute, related_name = 'grading_system' ,  on_delete=models.CASCADE) we dont need institut
 
 
     def __str__(self):
-        return f'Grading System for {self.institute.name}'
+        return f'Grading System for {self.user.username}'
 
 class Grade(models.Model):
     gradingSystem = models.ForeignKey(GradingSystem, related_name = 'grades' , on_delete=models.CASCADE)
@@ -89,16 +91,25 @@ class Grade(models.Model):
     
 class FailCriteria(models.Model):
     gradingSystem = models.OneToOneField(GradingSystem, related_name = 'fail_criteria' , on_delete=models.CASCADE)
-    overAllPercentage = models.PositiveIntegerField(validators=[MinValueValidator(0), MaxValueValidator(100)])
-    subjectAllPercentage = models.PositiveIntegerField(validators=[MinValueValidator(0), MaxValueValidator(100)])
-    noSubject = models.PositiveIntegerField()
+    overAllPercentage = models.PositiveIntegerField(validators=[MinValueValidator(0), MaxValueValidator(100)], null=True, blank=True)
+    subjectAllPercentage = models.PositiveIntegerField(validators=[MinValueValidator(0), MaxValueValidator(100)], null=True, blank=True)
+    noSubject = models.PositiveIntegerField(validators=[MinValueValidator(0)], null=True, blank=True)
 
     def __str__(self):
         return f'Fail Criteria for {self.gradingSystem.institute.name}'
+    
+    def clean(self):
+        if not self.overAllPercentage and (not self.subjectAllPercentage and not self.noSubject):
+            raise ValidationError('At least overall or no. of subjects and its percentage filled.')
+
+    def save(self, *args, **kwargs):
+        self.full_clean()
+        super(FailCriteria, self).save(*args, **kwargs)
+
+    def __str__(self):
+        return self.gradingSystem.user.username
 
 class FeeParticulars(models.Model):
-
-
     students = models.ManyToManyField(Student,related_name='feeParticulars', blank=True)
     fee_class = models.ForeignKey(eClass,related_name='feeParticulars', null=True, blank=True, on_delete=models.CASCADE)
     label = models.CharField(max_length=50)
@@ -121,3 +132,11 @@ class Rules(models.Model):
 
     def __str__(self):
         return self.user.username
+
+
+
+class AccountSettings(models.Model):
+    user = models.OneToOneField(User, related_name='settings', on_delete=models.CASCADE)
+    timezone = TimeZoneField(default='UTC', null=True)
+    country = CountryField()
+    currency = models.CharField(max_length=2, null=True, default="$")

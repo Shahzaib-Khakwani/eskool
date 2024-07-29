@@ -14,11 +14,14 @@ urlpatterns = [
     path("fee-particulars/", views.feeParticularsView.as_view(), name='feeParticulars'), 
 
     path("banks/", views.BankView.as_view(), name='banks'), 
-    path("banks/<int:pk>/delete", views.delete_bank, name='deleteBank'), 
-    path("banks/<int:pk>/update", views.BankView.as_view(), name='updateBank'),
+    path("banks/<int:pk>/delete/", views.delete_bank, name='deleteBank'), 
+    path("banks/<int:pk>/update/", views.BankView.as_view(), name='updateBank'),
 
     path("rules/", views.RulesView.as_view(), name='rules'), 
 
+    path("grading/", views.GradingView.as_view(), name='grading'),
+
+    path("account/", views.AccountSettingsView.as_view(), name='account'),
 
   
 

@@ -42,7 +42,8 @@ INSTALLED_APPS = [
     'account',
     'myapp',
     'student',
-    'eClass'
+    'eClass',
+    'teacher',
 
 ]
 
@@ -59,7 +60,7 @@ MIDDLEWARE = [
 ROOT_URLCONF = 'SMS.urls'
 
 LOGIN_REDIRECT_URL = 'myapp:home'
-LOGOUT_REDIRECT_URL = 'myapp:home'
+LOGOUT_REDIRECT_URL = 'account:login'
 
 
 TEMPLATES = [

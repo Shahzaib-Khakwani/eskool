@@ -85,12 +85,49 @@
                                             <p class="text-muted">Sign in to continue to Velzon.</p>
                                         </div>
 
+                                        {% if form.errors %}
+                                                        <div class="alert alert-danger">
+                                                            <strong>Error:</strong> Please correct the errors below.
+                                                            <ul>
+                                                                {% for field, errors in form.errors.items %}
+                                                                    {% for error in errors %}
+                                                                        <li>{{ error }}</li>
+                                                                    {% endfor %}
+                                                                {% endfor %}
+                                                            </ul>
+                                                        </div>
+                                                    {% endif %}
+
                                         <div class="mt-4">
-                                            <form method="post">
-                                                {% csrf_token %}
-                                                {{ form }}
-                                                <button type="submit">Log In</button>
-                                              </form>
+                                            <form action="{% url 'account:login' %}" method="post">
+                                                    {% csrf_token %}
+                                            
+                                                    
+                                                    <div class="mb-3">
+                                                    <label for="username" class="form-label">Username</label>
+                                                    <input type="text" class="form-control" id="username" name="username" placeholder="Enter username">
+                                                </div>
+        
+                                                <div class="mb-3">
+                                                    <div class="float-end">
+                                                        <a href="auth-pass-reset-basic.html" class="text-muted">Forgot password?</a>
+                                                    </div>
+                                                    <label class="form-label" for="password-input">Password</label>
+                                                    <div class="position-relative auth-pass-inputgroup mb-3">
+                                                        <input type="password" class="form-control pe-5 password-input" placeholder="Enter password" name="password" id="password-input">
+                                                        <button class="btn btn-link position-absolute end-0 top-0 text-decoration-none text-muted password-addon" type="button" id="password-addon"><i class="ri-eye-fill align-middle"></i></button>
+                                                    </div>
+                                                </div>
+        
+                                       
+        
+                                                <div class="mt-4">
+                                                    <button class="btn btn-success w-100" type="submit">Sign In</button>
+                                                </div>
+        
+                                                
+                                                    
+                                            </form>
                                         </div>
 
                                         <div class="mt-5 text-center">

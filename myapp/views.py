@@ -4,13 +4,16 @@ from django.views.generic import TemplateView, DeleteView
 from django.views import View
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.contrib.auth import authenticate
 
 
+import pycountry
+from timezone_field import TimeZoneFormField
 
-from .models import Institute, FeeParticulars, Bank, Rules
+from .models import Institute, FeeParticulars,AccountSettings, Bank, Rules, GradingSystem, Grade, FailCriteria
 from eClass.models import eClass
 from student.models import Student
-from .forms import InstituteForm, BankForm, RulesForm
+from .forms import InstituteForm, BankForm, RulesForm, AccountSettingsForm
 
 from django.http import HttpResponse
 
@@ -200,6 +203,7 @@ class RulesView(View):
     template_name = 'myapp/rules_form.html'
 
     def get(self, request):
+
         try:
             rules = get_object_or_404(Rules, user = request.user)
         except:
@@ -211,8 +215,18 @@ class RulesView(View):
     
 
 
-    def post(self, request):
+    def post(self, request, pk=None):
         form = RulesForm(request.POST)
+
+        if pk:
+            try:
+                rules = get_object_or_404(Rules, pk = pk)
+                form = RulesForm(request.POST, instance=rules)
+            except:
+                form = RulesForm(request.POST)
+        else:
+            form = RulesForm(request.POST)
+
 
         if form.is_valid():
             rules = form.save(commit=False)
@@ -224,3 +238,144 @@ class RulesView(View):
             context = {'form':form}
 
         return render(request, self.template_name, context)
+
+
+
+class GradingView(View):
+    template_name = 'myapp/grading.html'
+
+    def get(self, request):
+        try:
+            grading_system = get_object_or_404(GradingSystem, user = request.user)
+        except:
+            grading_system = None
+
+        context = {'grading_system': grading_system}
+
+        return render(request, self.template_name, context)
+    
+    def post(self, request):
+        marks_bol = request.POST.get('marks')
+        fail_bol = request.POST.get('fail')
+        
+
+        
+
+
+        # print(grades)
+        # print(to_values)
+        # print(from_values)
+        # print(status_values)
+        # print(nosubjects)
+        # print(percentage)
+        # print(marks_bol)
+        # print(fail_bol )
+        # print(type(overall))
+
+        try:
+            grading_system = GradingSystem.objects.create(user = request.user)
+        except:
+            grading_system = get_object_or_404(GradingSystem, user = request.user)
+            grading_system.grades.all().delete()
+
+        if marks_bol == 'marks':
+            grades = request.POST.getlist('grade')
+            from_values = request.POST.getlist('from')
+            to_values = request.POST.getlist('to')
+            status_values = request.POST.getlist('status')
+            for grade, from_value, to_value, status in zip(grades, from_values, to_values, status_values):
+                if grade.strip() and from_value.strip() and to_value.strip() and status.strip():
+                    grade = Grade.objects.create(gradingSystem = grading_system, grade = grade, fromPercentage = from_value, toPercentage = to_value, status = status)
+        else:
+            overall = request.POST.get('overall')
+            percentage = request.POST.get('percentage')
+            nosubjects = request.POST.get('nosubjects')
+            if overall.strip() or (percentage.strip() and nosubjects.strip()) :
+                try:
+                    overall = int(overall)
+                except:
+                    overall = None
+                
+                try:
+                    percentage = int(percentage)
+                except:
+                    percentage = None
+
+                try:
+                    nosubjects = int(nosubjects)
+                except:
+                    nosubjects = None
+
+
+                try:
+                    fail_creteria = get_object_or_404(FailCriteria, gradingSystem = grading_system)
+                    fail_creteria.overAllPercentage = overall
+                    fail_creteria.subjectAllPercentage = percentage
+                    fail_creteria.noSubject = nosubjects
+                    fail_creteria.save()
+                except:
+                    
+                    fail_creteria = FailCriteria.objects.create(gradingSystem = grading_system, overAllPercentage = overall, subjectAllPercentage = percentage, noSubject = nosubjects)
+
+       
+
+
+        return redirect(reverse_lazy("myapp:grading"))
+
+
+class AccountSettingsView(View):
+    template_name = 'myapp/account_settings.html' 
+
+
+    def get(self, request):
+        try:
+            account_setting = get_object_or_404(AccountSettings, user = request.user)
+        except:
+            account_setting = None
+
+        timezone = TimeZoneFormField()
+        context = {'countries':pycountry.countries, 'timezone': timezone.choices , 'account_settings':account_setting}
+
+        return render(request, self.template_name, context)
+
+    def post(self, request):
+        timezone = request.POST.get('timezone')
+        country = request.POST.get('country')
+        currency = request.POST.get('currency')
+
+        # print(timezone)
+        # print(country)
+        # print(currency)
+
+
+        try:
+            account_setting = get_object_or_404(AccountSettings, user = request.user)
+        except:
+            account_setting = AccountSettings.objects.create(user = request.user)
+
+        form = AccountSettingsForm(request.POST, instance=account_setting)
+
+        if form.is_valid():
+            obj = form.save(commit=False)
+            if timezone:
+                obj.timezone = timezone
+            if currency:
+                obj.currency = currency
+
+
+        account_setting.save()
+
+        username = request.POST.get('username')
+        password1 = request.POST.get('password1')
+        password2 = request.POST.get('password2')
+
+    
+        user = authenticate(request, username=username, password=password1)
+
+        if user is not None and account_setting.user == user:
+            account_setting.user.set_password(password2)
+
+
+
+
+        return redirect(reverse_lazy("myapp:account"))
